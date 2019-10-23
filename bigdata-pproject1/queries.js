@@ -170,3 +170,70 @@ db.employees.find({
     { middleName: { $regex: /I/ } }
   ]
 });
+
+// BUSINESS QUERIES. PART 2
+// 1.
+var employee = db.employees.findOne({
+  firstName: "Kiril",
+  lastName: "Nedelev"
+});
+db.employees.update(
+  { _id: employee._id },
+  {
+    $set: {
+      departmentMovements: [
+        {
+          previous: db.departments.findOne({ name: "Loans" })._id,
+          next: db.departments.findOne({ name: "Treasury Management" })._id,
+          movedAt: new Date("2019-08-11")
+        },
+        {
+          previous: db.departments.findOne({ name: "Treasury Management" })._id,
+          next: db.departments.findOne({ name: "Back Office" })._id,
+          movedAt: new Date("2019-10-15")
+        }
+      ]
+    }
+  }
+);
+var employee = db.employees.findOne({
+  firstName: "Jeremy",
+  lastName: "Saunders"
+});
+db.employees.update(
+  { _id: employee._id },
+  {
+    $set: {
+      departmentMovements: [
+        {
+          previous: db.departments.findOne({ name: "Loans" })._id,
+          next: db.departments.findOne({ name: "Deposits" })._id,
+          movedAt: new Date("2019-09-09")
+        }
+      ]
+    }
+  }
+);
+// 2.
+var twoMonthsAgo = new Date();
+twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+db.employees.find({
+  "departmentMovements.movedAt": {
+    $gte: twoMonthsAgo
+  }
+});
+// 3.
+db.employees.find({
+  $or: [
+    {
+      departmentMovements: {
+        $exists: false
+      }
+    },
+    {
+      departmentMovements: {
+        $size: 0
+      }
+    }
+  ]
+});
