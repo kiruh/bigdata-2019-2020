@@ -31,7 +31,22 @@ db.employees.insert({
   phone: "+3593532532",
   email: "samuel@mailbox.com",
   position: "Cash Manager",
-  department: db.departments.findOne({ name: "Cash Management" })._id
+  department: db.departments.findOne({ name: "Cash Management" })._id,
+  managers: [
+    db.employees.findOne({ firstName: "Jeremy", lastName: "Saunders" })._id
+  ]
+});
+db.employees.insert({
+  firstName: "Jessica",
+  lastName: "Davidson",
+  address: "st. Hello world, 8",
+  phone: "+3592343244",
+  email: "jessica@mailbox.com",
+  position: "Cash Manager",
+  department: db.departments.findOne({ name: "Cash Management" })._id,
+  managers: [
+    db.employees.findOne({ firstName: "Jeremy", lastName: "Saunders" })._id
+  ]
 });
 db.employees.insert({
   firstName: "Andrew",
@@ -95,12 +110,13 @@ var random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 // 1.
 db.departments.find({}, { _id: 0, name: 1 });
 // 2.
+var salaries = [2500, 3000, 3500, 5000, 5500];
 db.employees.find().forEach(employee => {
   db.employees.update(
     { _id: employee._id },
     {
       $set: {
-        salary: random(1000, 2000)
+        salary: salaries[random(0, salaries.length - 1)]
       }
     }
   );
@@ -225,15 +241,64 @@ db.employees.find({
 // 3.
 db.employees.find({
   $or: [
-    {
-      departmentMovements: {
-        $exists: false
-      }
-    },
-    {
-      departmentMovements: {
-        $size: 0
-      }
-    }
+    { departmentMovements: { $exists: false } },
+    { departmentMovements: { $size: 0 } }
   ]
 });
+
+// BUSINESS QUERIES. PART 3
+// 1.
+var employee = db.employees.findOne({
+  firstName: "Jeremy",
+  lastName: "Saunders"
+});
+db.employees.update({ _id: employee._id }, { $set: { isFired: true } });
+db.employees.find({ isFired: true });
+// 2.
+var employee = db.employees.findOne({
+  firstName: "Jessica",
+  lastName: "Davidson"
+});
+db.employees.update({ _id: employee._id }, { $set: { onParentalLeave: true } });
+db.employees.find({ onParentalLeave: true });
+// 3.
+var employee = db.employees.findOne({
+  firstName: "Kiril",
+  lastName: "Nedelev"
+});
+db.employees.update({ _id: employee._id }, { $set: { isVacant: true } });
+db.employees.find({ isVacant: true });
+// 4.
+db.employees.find({
+  $and: [{ salary: { $gte: 2000 } }, { salary: { $lte: 3000 } }]
+});
+// 5.
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$salary",
+      employees: { $push: { $concat: ["$firstName", " ", "$lastName"] } }
+    }
+  }
+]);
+// 6.
+db.employees.find({
+  $or: [{ managers: { $exists: false } }, { managers: { $size: 0 } }]
+});
+// 7.
+db.employees.find({ salary: { $gt: 5000 } }).sort({ firstName: -1 });
+// 8.
+db.employees.aggregate([
+  { $sort: { salary: -1 } },
+  {
+    $group: {
+      _id: "$department",
+      employees: { $push: { $concat: ["$firstName", " ", "$lastName"] } }
+    }
+  },
+  {
+    $project: {
+      employees: { $slice: ["$employees", 5] }
+    }
+  }
+]);
