@@ -110,16 +110,18 @@ var random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 // 1.
 db.departments.find({}, { _id: 0, name: 1 });
 // 2.
-var salaries = [2500, 3000, 3500, 5000, 5500];
+var salaries = [2500, 3000, 3500, 5000, 5500].reverse();
+var index = 0;
 db.employees.find().forEach(employee => {
   db.employees.update(
     { _id: employee._id },
     {
       $set: {
-        salary: salaries[random(0, salaries.length - 1)]
+        salary: salaries[index % salaries.length]
       }
     }
   );
+  index++;
 });
 db.employees.find({}, { _id: 0, firstName: 1, lastName: 1, salary: 1 });
 // 3.
@@ -293,12 +295,156 @@ db.employees.aggregate([
   {
     $group: {
       _id: "$department",
-      employees: { $push: { $concat: ["$firstName", " ", "$lastName"] } }
+      employees: {
+        $push: {
+          $concat: [
+            "$firstName",
+            " ",
+            "$lastName",
+            ", ",
+            { $toString: "$salary" }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "departments",
+      localField: "_id",
+      foreignField: "_id",
+      as: "departmentObj"
+    }
+  },
+  { $unwind: "$departmentObj" },
+  {
+    $project: {
+      _id: 0,
+      name: "$departmentObj.name",
+      employees: { $slice: ["$employees", 5] }
+    }
+  }
+]);
+// 9.
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      total: { $sum: "$salary" }
+    }
+  },
+  { $sort: { total: 1 } },
+  {
+    $lookup: {
+      from: "departments",
+      localField: "_id",
+      foreignField: "_id",
+      as: "departmentObj"
+    }
+  },
+  { $unwind: "$departmentObj" },
+  {
+    $project: {
+      name: "$departmentObj.name",
+      total: "$total"
+    }
+  },
+  {
+    $group: {
+      _id: "$total",
+      ids: { $push: "$_id" },
+      names: { $push: "$name" }
+    }
+  },
+  { $sort: { _id: 1 } },
+  { $limit: 1 },
+  {
+    $project: {
+      _id: 0,
+      minSalary: "$_id",
+      departments: {
+        $map: {
+          input: { $zip: { inputs: ["$ids", "$names"] } },
+          as: "el",
+          in: {
+            _id: { $arrayElemAt: ["$$el", 0] },
+            name: { $arrayElemAt: ["$$el", 1] }
+          }
+        }
+      }
+    }
+  }
+]);
+// 10.
+// a) group by department
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      avgSalary: { $avg: "$salary" }
+    }
+  },
+  {
+    $lookup: {
+      from: "departments",
+      localField: "_id",
+      foreignField: "_id",
+      as: "departmentObj"
+    }
+  },
+  { $unwind: "$departmentObj" },
+  {
+    $project: {
+      _id: 0,
+      name: "$departmentObj.name",
+      avgSalary: "$avgSalary"
+    }
+  }
+]);
+// b) group by salary
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      avgSalary: { $avg: "$salary" }
+    }
+  },
+  {
+    $lookup: {
+      from: "departments",
+      localField: "_id",
+      foreignField: "_id",
+      as: "departmentObj"
+    }
+  },
+  { $unwind: "$departmentObj" },
+  {
+    $project: {
+      name: "$departmentObj.name",
+      avgSalary: "$avgSalary"
+    }
+  },
+  {
+    $group: {
+      _id: "$avgSalary",
+      ids: { $push: "$_id" },
+      names: { $push: "$name" }
     }
   },
   {
     $project: {
-      employees: { $slice: ["$employees", 5] }
+      _id: 0,
+      avgSalary: "$_id",
+      departments: {
+        $map: {
+          input: { $zip: { inputs: ["$ids", "$names"] } },
+          as: "el",
+          in: {
+            _id: { $arrayElemAt: ["$$el", 0] },
+            name: { $arrayElemAt: ["$$el", 1] }
+          }
+        }
+      }
     }
   }
 ]);
