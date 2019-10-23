@@ -87,7 +87,6 @@ db.clients.insert({
     }
   ]
 });
-
 db.clients.insert({
   firstName: "Alena",
   lastName: "Krivicki",
@@ -100,6 +99,19 @@ db.clients.insert({
       _id: new ObjectId(),
       currency: "EUR",
       balance: 456.12
+    }
+  ]
+});
+db.clients.insert({
+  firstName: "Arina",
+  lastName: "Velikova",
+  address: "st. Hello world, 15",
+  phone: "+35932453533",
+  email: "arina@mailbox.com",
+  accounts: [
+    {
+      _id: new ObjectId(),
+      balance: 0
     }
   ]
 });
@@ -448,3 +460,26 @@ db.employees.aggregate([
     }
   }
 ]);
+
+// BUSINESS QUERIES. PART 4
+// 1.
+db.clients.find({
+  "accounts.currency": { $exists: true, $ne: "BGN" }
+});
+// 2.
+db.clients.find({
+  $or: [{ "accounts.balance": { $exists: false } }, { "accounts.balance": 0 }]
+});
+// 3.
+db.clients.find().forEach(client => {
+  if (!client.accounts) return;
+  const accounts = client.accounts.map(account => {
+    return {
+      ...account,
+      name: `${client.firstName} ${
+        client.lastName
+      } account ${account.currency || "BGN"}`
+    };
+  });
+  db.clients.update({ _id: client._id }, { $set: { accounts } });
+});
