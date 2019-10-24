@@ -92,7 +92,7 @@ db.cars.find().forEach(car => {
     var cargos = db.cargos.find({ carId: car._id }).toArray();
     if (cargos.length) {
         cargos.forEach(cargo => {
-            print('- ' + cargo.name, + ' (' + cargo.category + '), ' + cargo.amount + ' kg');
+            print('- ' + cargo.name + ' (' + cargo.category + '), ' + cargo.amount + ' kg');
         })
     } else {
         print('- No cargo');
