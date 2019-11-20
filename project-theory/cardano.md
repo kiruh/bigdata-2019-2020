@@ -25,9 +25,9 @@ Cardano е нещо повече от криптовалута, но това е
 
 ## Инструменти
 
-** Cardano SL ** - Cardano SL (или Cardano Settlement Layer) е криптографска валута, проектирана и разработена от IOHK.
+**Cardano SL** - Cardano SL (или Cardano Settlement Layer) е криптографска валута, проектирана и разработена от IOHK.
 
-** Daedalus ** - портфейл с криптовалута.
+**Daedalus** - портфейл с криптовалута.
 
 ## Пазари
 
