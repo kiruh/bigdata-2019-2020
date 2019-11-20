@@ -1,35 +1,35 @@
 # Cardano
 
-## About Cardano
+## За Cardano
 
-Cardano is a decentralised public blockchain and cryptocurrency project and is fully open source. Cardano is developing a smart contract platform which seeks to deliver more advanced features than any protocol previously developed. It is the first blockchain platform to evolve out of a scientific philosophy and a research-first driven approach.
+Cardano е децентрализиран публичен блокчейн и криптовалута и е напълно отворен код. Cardano разработва интелигентна договорна платформа, която се стреми да предостави по-усъвършенствани функции от всеки протокол, разработен преди това. Това е първата blockchain платформа, която се развива от научна философия и ориентиран към изследването подход.
 
-Cardano is home to the Ada cryptocurrency, which can be used to send and receive digital funds.
+Cardano е дом на криптовалутата Ada, която може да се използва за изпращане и получаване на цифрови средства.
 
-Cardano is more than just a cryptocurrency, however, it is a technological platform that will be capable of running financial applications currently used every day by individuals, organisations and governments all around the world. The platform is being constructed in layers, which gives the system the flexibility to be more easily maintained and allow for upgrades by way of soft forks. After the settlement layer that will run Ada is complete, a separate computing layer will be built to handle smart contracts, the digital legal agreements that will underpin future commerce and business. Cardano will also run decentralised applications, or dapps, services not controlled by any single party but instead operate on a blockchain.
+Cardano е нещо повече от криптовалута, но това е технологична платформа, която ще може да изпълнява финансови приложения, използвани понастоящем всеки ден от хора, организации и правителства по целия свят. Платформата се изгражда на слоеве, което дава на системата гъвкавостта да бъде по-лесно поддържана и дава възможност за ъпгрейди чрез меки вилици. След приключване на сетълментния слой, който ще изпълнява Ada, ще бъде изграден отделен изчислителен слой, който да обработва интелигентни договори, цифровите правни споразумения, които ще бъдат в основата на бъдещата търговия и бизнес. Cardano също ще изпълнява децентрализирани приложения или дапс услуги, които не се контролират от нито една страна, а вместо това работят на блокчейн.
 
-## Pros and cons
+## Предимства и недостатъци
 
-### Pros
+### Предимства
 
-- Open-Source Code
-- A Credible Team
-- Double Layered Character
-- Energy efficient consensus protocol
+- Код с отворен код
+- Верен екип
+- Двуслоен знак
+- Енергоефективен консенсус протокол
 
-### Cons
+### Недостатъци
 
-- Centralisation Concerns
-- Security Vulnerability
-- New Programming Language, That Has No Proven Use Case
+- Опасенията за централизация
+- Уязвимост на сигурността
+- Нов език за програмиране, който няма доказан случай на употреба
 
-## Tools
+## Инструменти
 
-**Cardano SL** - Cardano SL (or Cardano Settlement Layer) is a cryptographic currency designed and developed by IOHK.
+** Cardano SL ** - Cardano SL (или Cardano Settlement Layer) е криптографска валута, проектирана и разработена от IOHK.
 
-**Daedalus** - cryptocurrency wallet.
+** Daedalus ** - портфейл с криптовалута.
 
-## Markets
+## Пазари
 
 - https://www.coinex.com/
 - https://www.binance.com/en
