@@ -10,8 +10,12 @@ const crypto = require("crypto");
 const { dialog } = require("electron").remote;
 
 const alert = message => {
-  const options = { type: "info", buttons: ["OK"], message };
-  dialog.showMessageBox(options, () => {});
+  const box = document.getElementById("message");
+  if (box) {
+    box.innerHTML = `<pre>${message}</pre>`;
+  }
+  // const options = {type: 'info', buttons: ['OK'], message};
+  // dialog.showMessageBox(options, () => {});
 };
 
 const getWalletId = (username, password) => {
@@ -39,18 +43,16 @@ document.querySelector("#signup").addEventListener("click", () => {
   }
   try {
     fs.writeFileSync(name, content, "utf-8");
-    alert("Signed up successfully!");
+    alert(["Signed up successfully!", walletId].join("\n"));
   } catch (e) {
     alert("Failed to save the file!");
   }
 });
 
 document.querySelector("#login").addEventListener("click", () => {
-  const username = document.getElementById("login-username").value;
-  const password = document.getElementById("login-password").value;
-  const walletId = getWalletId(username, password);
+  const walletId = document.getElementById("login-hash").value;
   if (!walletId) {
-    alert("Username and password are required");
+    alert("Hash is required");
     return;
   }
   try {
@@ -59,7 +61,7 @@ document.querySelector("#login").addEventListener("click", () => {
     if (walletId === json.walletId) {
       alert("Logged in successfully");
     } else {
-      alert("Username or password are incorrect");
+      alert("Hash is incorrect");
     }
   } catch (e) {
     alert("Could not read file");
