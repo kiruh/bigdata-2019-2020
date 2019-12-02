@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Unichain</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+  <div class="container">
+    <h2>Unichain</h2>
+    <hr class="mb-2" />
+    <div id="signin" class="d-none">
+      <div class="row">
+        <div class="col-md-4 offset-md-4">
+          <form id="signin_form">
+            <div class="form-group">
+              <label for="signin_userKey">User key</label>
+              <input type="text" placeholder="User key" id="signin_userKey" class="form-control" />
+              <p id="signin_error" class="help-block text-danger d-none">
+                Could not login
+              </p>
+            </div>
+            <button class="btn btn-primary" type="submit">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="signed" class="d-none">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <h4>
+            <span id="signed_name">
+              <!-- signed_name -->
+            </span>
+          </h4>
+        </div>
+        <button id="signed_signout" class="btn btn-link" type="button">Sign out</button>
+      </div>
+    </div>
+    <div id="dashboard" class=" d-none">
+      <div class="row">
+        <div id="dashboard_currencies" class="col-md-6">
+          <!-- dashboard_currencies -->
+        </div>
+        <div id="dashboard_users" class="col-md-6">
+          <!-- dashboard_users -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./renderer.js"></script>
+</body>
+
+</html>
